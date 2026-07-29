@@ -1,0 +1,11 @@
+Copy your existing trained model artifacts into this folder, exactly as
+produced by main.ipynb (Step 6 / Step 7 / final cells):
+
+    models/best_model.pkl        <- the trained XGBoost model (joblib.dump)
+    models/feature_cols.pkl      <- the ordered list of feature column names
+
+Nothing in this application re-trains or modifies these files. If they are
+missing, the app still runs in demo mode: parking-lot availability falls
+back to a deterministic mock estimate (see predict_for_lot() in
+utils/prediction.py) so the UI can be reviewed before the real model is
+wired in.

@@ -1,0 +1,148 @@
+AI-Driven Smart Parking — Local Setup & Run Guide
+===================================================
+
+Project Root:
+  /Users/vamsipodili/Downloads/AI_Driven_Car_Occupancy_Prediction/
+
+App Folder (run everything from here):
+  /Users/vamsipodili/Downloads/AI_Driven_Car_Occupancy_Prediction/smart_parking_app/
+
+Folder Structure:
+  smart_parking_app/
+  ├── app.py                        ← Main entry point (Streamlit)
+  ├── requirements.txt              ← Python package list
+  ├── .streamlit/
+  │   ├── config.toml               ← Theme & server config
+  │   └── secrets.toml.example      ← Template for API keys
+  ├── pages/
+  │   ├── 1_🏠_Dashboard.py         ← Dashboard page
+  │   ├── 2_🅿️_Find_and_Book.py     ← Find & Book parking page
+  │   └── 3_👤_Account.py           ← Account & profile page
+  ├── utils/
+  │   ├── auth.py                   ← Login / session / logout
+  │   ├── data_store.py             ← In-memory DB (users, bookings, lots)
+  │   ├── gps_satellite.py          ← GPS telemetry simulation
+  │   ├── hero.py                   ← 3D hero section HTML
+  │   ├── payment.py                ← Razorpay payment simulation
+  │   ├── prediction.py             ← XGBoost occupancy prediction
+  │   ├── qr_utils.py               ← QR code generator
+  │   ├── sidebar.py                ← Left sidebar navigation
+  │   └── ui.py                     ← All CSS, components, stat cards
+  ├── assets/
+  │   ├── logo.png                  ← App logo
+  │   └── bg.png                    ← Background image
+  ├── data/
+  │   ├── db.json                   ← User & booking database (JSON)
+  │   └── parking_locations.json    ← Parking lots data
+  ├── models/
+  │   ├── best_model.pkl            ← Trained XGBoost model
+  │   └── feature_cols.pkl          ← Feature column names
+  └── venv/                         ← Python virtual environment
+
+
+======================================================
+STEP-BY-STEP COMMANDS TO RUN THE PROJECT
+======================================================
+
+Step 1 — Install System Dependency (macOS only, one-time)
+----------------------------------------------------------
+  brew install libomp
+
+  Note: XGBoost uses OpenMP for parallel processing. If libomp
+  is missing the app will still run with a fallback prediction.
+
+
+Step 2 — Navigate to the App Folder
+------------------------------------
+  cd /Users/vamsipodili/Downloads/AI_Driven_Car_Occupancy_Prediction/smart_parking_app
+
+
+Step 3 — Create the Virtual Environment (one-time setup)
+---------------------------------------------------------
+  python3 -m venv venv
+
+
+Step 4 — Activate the Virtual Environment
+------------------------------------------
+  source venv/bin/activate
+
+  Your terminal prompt will change to show (venv) on the left.
+  Run this EVERY TIME you open a new terminal session.
+
+
+Step 5 — Install Python Dependencies (one-time setup)
+------------------------------------------------------
+  pip install -r requirements.txt
+
+  This installs: streamlit, pandas, numpy, xgboost,
+  scikit-learn, qrcode, Pillow and all other dependencies.
+
+
+Step 6 — (Optional) Add Google Maps API Key
+--------------------------------------------
+  Create the file: smart_parking_app/.streamlit/secrets.toml
+  Add this line inside it:
+
+    GOOGLE_MAPS_API_KEY = "YOUR_ACTUAL_API_KEY_HERE"
+
+  Without this key the app shows embedded map previews instead.
+
+
+Step 7 — Launch the App
+------------------------
+  streamlit run app.py --server.port 8503
+
+  The app will open automatically in your browser at:
+    http://localhost:8503
+
+  To run in the background without auto-opening the browser:
+    streamlit run app.py --server.port 8503 --server.headless true
+
+
+======================================================
+DEMO LOGIN CREDENTIALS
+======================================================
+
+  Driver User:       demo@smartparking.ai   / Demo1234!
+  Parking Lot Owner: owner@smartparking.ai  / Owner1234!
+  Platform Admin:    admin@smartparking.ai  / Admin1234!
+
+  Or register a new account via the "Register" tab on the home page.
+  Or log in with Google using the "Google Login" tab.
+
+
+======================================================
+QUICK RESTART (after first setup)
+======================================================
+
+Every time you want to run the app again:
+
+  cd /Users/vamsipodili/Downloads/AI_Driven_Car_Occupancy_Prediction/smart_parking_app
+  source venv/bin/activate
+  streamlit run app.py --server.port 8503
+
+Then open: http://localhost:8503
+
+
+======================================================
+STOP THE APP
+======================================================
+
+Press Ctrl+C in the terminal where the app is running.
+
+
+======================================================
+TROUBLESHOOTING
+======================================================
+
+  Q: "ModuleNotFoundError" on startup
+  A: Run:  pip install -r requirements.txt
+
+  Q: Port 8503 already in use
+  A: Use a different port:  streamlit run app.py --server.port 8504
+
+  Q: Model predictions not working
+  A: Ensure models/best_model.pkl and models/feature_cols.pkl exist
+
+  Q: App shows blank page
+  A: Hard-refresh the browser with Ctrl+Shift+R (or Cmd+Shift+R on Mac)
